@@ -1,0 +1,33 @@
+{
+    "llm_type":"openai",
+    "prompt_file_path":"config/chat_prompt.txt",
+    "log_folder":"log/",
+    "top_p":0.6,
+    "temperature":0.8,
+    "max_tokens":1536,
+    "stream":true,
+    "only_retrieval":false,
+    "max_token_of_chat_history":2048,
+    "retrieval":{
+        "embedding_model_or_path":"models/bge-base-zh-v1.5",
+        "milvus_client":"http://192.168.92.250:19530",
+        "collection_name":"hybrid_search_for_cooker",
+        "search_k":30,
+        "retrieval_top_k":5,
+        "retrieval_similarity_threshold":0.0
+    },
+    "bm25":{
+        "enable_bm25":true,
+        "stop_words_file":"data/bm25/stopwords.txt",
+        "bm25_model_path":"data/bm25/bm25_model.json",
+        "retrieval_top_k":5
+    },
+    "rerank":{
+        "enable_rerank":false,
+        "rerank_model_name_or_path":"models/bge-reranker-large",
+        "rerank_top_k":10
+    },
+    "query_refine":{
+        "enable_query_refine":true
+    }
+}

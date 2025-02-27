@@ -36,7 +36,7 @@ RAG能够构建灵活的知识库，这个知识库是可以编辑、可动态�
 同样的情况，检索模型也需要在垂域上进行增强训练才能达到更好的效果。
 
 ## **垂域RAG**
-不管RAG技术如何迭代，无论是朴素RAG还是hyper-RAG、GraphRAG和meta-RAG，无非都分为三个部分：知识库、检索、问答。区别在于各种方法在各个板块的措施不太一样。例如graphRAG引入了知识图谱，构建了Local search和Global search。所以，无论多复杂的RAG系统都可以用上述几个过程来描述。
+不管RAG技术如何迭代，无论是朴素RAG还是hybrid-RAG、GraphRAG和meta-RAG，无非都分为三个部分：知识库、检索、问答。区别在于各种方法在各个板块的措施不太一样。例如graphRAG引入了知识图谱，构建了Local search和Global search。所以，无论多复杂的RAG系统都可以用上述几个过程来描述。
 ![RAG流程](media/image1.png)
 考虑到垂域RAG的性能优化，我们将垂域RAG的分为下面五大板块，每一个板块涉及到了不少的优化措施。
 
