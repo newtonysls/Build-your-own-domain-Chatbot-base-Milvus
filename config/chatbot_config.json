@@ -10,7 +10,7 @@
     "max_token_of_chat_history":2048,
     "retrieval":{
         "embedding_model_or_path":"models/bge-base-zh-v1.5",
-        "milvus_client":"http://192.168.92.250:19530",
+        "milvus_client":"http://127.0.0.0:19530",
         "collection_name":"hybrid_search_for_cooker",
         "search_k":30,
         "retrieval_top_k":5,
