@@ -21,7 +21,6 @@ import numpy as np
 import torch
 
 class ChatBot:
-    
     def __init__(self,config_or_file_path):
         """
         function：根据config初始化RAG各项功能（system prompt、向量化模型、连结milvus数据库、加载LLM等）
@@ -97,7 +96,6 @@ class ChatBot:
             for line in f.readlines():
                 self.SYSTEM_PROMPT += line
 
-    
     def _dense_retrieval(self,
                   query:List[str],
                   retrieval_args:Retrieval,
@@ -123,7 +121,7 @@ class ChatBot:
             anns_field="dense_vector",
             data=data,  # Use the `emb_text` function to convert the question to an embedding vector
             limit=retrieval_args.retrieval_top_k,  # Return top k results
-            search_params={"metric_type": "COSINE", "params": {}},  # Inner product distance
+            search_params={"metric_type": "COSINE", "params": {}},  # COSINE distance
             output_fields=["text"],  # Return the text field
         )
 

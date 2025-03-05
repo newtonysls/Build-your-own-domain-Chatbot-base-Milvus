@@ -8,7 +8,7 @@ from init_embedding_model import (
 from typing_extensions import List
 
 # 停用词表，去除corpus中的无意义词
-STOP_WORDS_FILE = "/data/megastore/Projects/PanHe/code/agent/rag_hp/dialogue/rag_projects/data/stop_words/hit_stopwords.txt"
+STOP_WORDS_FILE = "data/bm25/stopwords.txt"
 
 # 知识库
 CORPUS:List[str] = [
@@ -18,7 +18,7 @@ CORPUS:List[str] = [
 ]
 
 # 存储bm25计算好的IDF信息
-BM25_MODEL_SAVE = "/data/megastore/Projects/PanHe/code/agent/rag_hp/dialogue/data/bm25_model.json"
+BM25_MODEL_SAVE = "data/bm25/bm25_model.json"
 
 # init bm25 embeddings
 tokenizer = BaseTokenizer(STOP_WORDS_FILE)
