@@ -252,7 +252,32 @@ col.flush()
 Milvus的hybrid检索可以参考官方教程：[hybrid search](https://milvus.io/docs/zh/hybrid_search_with_milvus.md#:~:text=start%20learning%20programming%3F-,%E8%BF%90%E8%A1%8C%E6%90%9C%E7%B4%A2,-%E6%88%91%E4%BB%AC%E5%B0%86%E9%A6%96%E5%85%88)
 
 本项目的检索代码位于*src/chatbot/chatbot.py*代码文件中，考虑了问题改写时可能会出现用户输入复杂的问题被LLM拆解为两个以上的sub-query，代码函数中支持了批量检索以及对结果的去重处理。
+
+**稠密向量**
+
+稠密向量检索的实现方法位于*src/chatbot/chatbot.py*中的*_dense_retrieval()*函数，支持输入的query为list格式，方便对多个改写拆解之后的sub-query进行检索。返回一个set数据结构，方便和稀疏向量进行去重。在进行向量召回的时候，可以设置阈值，让大于阈值的文档才返回。
+
+**稀疏向量**
+
+稀疏向量的方式采用bm25检索方式。Milvus对bm25的实现方式，先将所有知识库转化为词表长度稀疏向量，并相应的计算词的IDF指标，然后存储起来。检索的时候，将query分词之后的TF计算得到词表长度的稀疏向量，并通过“点积（内积）/IP”的方式计算bm25 score，完成召回的过程。
+
+但是原始的bm25只能对单个query执行文档的召回，在多轮情况下效果不加（在没有query改写的情况，无法结合上下文进行召回）。本项目提出了一种**基于权重的上下文bm25检索**方法。该方法的思路很简单：设置一个窗口N，将包含当前query在内的前N个query作为一个list，逐步计算每个query的bm25分数，但是为每个query设置一个分值权重，当前query权重为1，越往前的query权重越小。推荐只是幂函数或者指数函数作为权重衰减函数。通过这个简单的方法，在保证对当前query的足够考虑下，同时考虑前文的提问，实现了多轮对话情况下的召回。
+
+例如，["黄瓜可以做什么菜？","还有呢？"]
+
+对应的代码在**src/build_database/init_embedding_model.py**中的**_encode_query_revise()**函数，本项目采用幂函数作为权重的衰减。
+
+
 ## 三、运行ChatBot
 在构建完成Milvus数据库以及知晓如何实现检索后，剩下只需要构建LLM接口、设置对话system prompt，将query检索到的文档组合到system prompt并发送给LLM，就能够实现最简单的ChatBot了。
 
 但是我们的目的不是为了实现一个简单的问答助手，而是要构建一个效果好的助手，因此在对话流程逻辑上还需要加入一定的优化措施，例如问题改写、重排、system的构造等等。
+
+运行**AI厨师-神厨小福贵**可直接运行下面代码
+```bash
+python src/run_chatbot.py\
+    --chatbot_config "config\chatbot_config.json"
+```
+该代码为基于**ChatBot**类和gradio实现的简单对话UI界面。其中依赖的是**ChatBot**类chat函数。
+
+**ChatBot**类要求使用一个json格式的config文件进行初始化，控制检索、重排、问题改写等等的初始化参数。该config文件位于**config\chatbot_config.json**，已经预置了chatbot相关参数。config的参数依赖于**src/chatbot/config.py**的参数类，如果需要增加额外的参数（额外的检索方法、对话逻辑等）可以在这里进行灵活的修改。
