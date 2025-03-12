@@ -50,7 +50,11 @@ def md_split_by_level(texts:List[str],level:Union[int,str]=1)->List[dict]:
                 splited_item["texts"] = cur_text
                 if title is not None:
                     title = title.lstrip(level_spliter)
-                    title = f"{level_spliter}{index_count+1}.{title}"
+                    if len(re.findall(r"^[\d一二三四五六七八九十][\.、]",title)) == 0:
+                        # 如果标题没有序号，则在补全标题时，补全序号
+                        title = f"{level_spliter}{index_count+1}.{title}"
+                    else:
+                        title = f"{level_spliter}{title}"
                     index_count +=1
                 splited_item["title"] = title
                 splited_texts.append(splited_item)
