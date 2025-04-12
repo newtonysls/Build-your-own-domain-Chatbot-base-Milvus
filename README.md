@@ -2,6 +2,11 @@
 # **Build-your-own-domain-RAG-base-Milvus**
 > 如何基于milvus构建垂域RAG；垂域RAG可以做哪些优化；垂域RAG优化流程
 
+# 更新说明
+> 建立更新说明，以便查看更新内容
+
+* 更新了由文档抽取Query的代码和脚本，为后续训练检索模型构建训练集:*Build-your-own-domain-RAG-base-Milvus\project\extract_query_from_document.sh*
+
 
 # **使用milvus框架构建垂域RAG应用**
 > 下面介绍RAG的原理和优化措施，直接开始构建Chatbot可以转到[AI菜谱-神厨小福贵](project/README.md)
